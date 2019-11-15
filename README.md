@@ -14,7 +14,8 @@ In case that fails, use the above repos to build needed images.
 
 **Prerequisites**
 
-Download and extract WAVES Mainnet Blockchain data into data directory
+Download and extract WAVES Mainnet Blockchain data into data directory running install script
+
 ```$ ./install.sh```
 
 **Running**
