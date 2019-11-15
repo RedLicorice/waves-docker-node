@@ -17,7 +17,7 @@ services:
       - WAVES_LOG_LEVEL=DEBUG
       - WAVES_HEAP_SIZE=2g
     volumes:
-      - ./wavesnode-data:/var/lib/waves
+      - ./wavesnode-data/data:/var/lib/waves
     ports:
       - 6869:6869
       - 6868:6868
