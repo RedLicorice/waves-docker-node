@@ -16,6 +16,7 @@ services:
       - WAVES_NETWORK=MAINNET
       - WAVES_LOG_LEVEL=DEBUG
       - WAVES_HEAP_SIZE=2g
+      - JAVA_OPTS='-Dwaves.network.declared-address=0.0.0.0:6868 -Dwaves.rest-api.port=6870 -Dwaves.rest-api.bind-address=0.0.0.0 -Dwaves.rest-api.enable=yes'
     volumes:
       - ./wavesnode-data/data:/var/lib/waves
     ports:
