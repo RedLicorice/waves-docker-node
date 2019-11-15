@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  postgres:
+    container_name: postgres
+    image: 'postgres:11-alpine'
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - '5432:5432'
+  
+  wavesnode:
+    image: wavesplatform/wavesnode
+    container_name: wavesnode
+    environment:
+      - WAVES_NETWORK=MAINNET
+      - WAVES_LOG_LEVEL=DEBUG
+      - WAVES_HEAP_SIZE=2g
+    volumes:
+      - ./wavesnode-data:/var/lib/waves
+    ports:
+      - 6869:6869
+      - 6868:6868
+      - 6863:6863
+      - 6864:6864
+  
+  crawler:
+    image: wavesplatform/blockchain-postgres-sync
+    container_name: crawler
+    depends_on:
+      - postgres
+      - wavesnode
+    environment:
+      - 'NODE_ADDRESS=https://wavesnode'
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=secret
+      - MIGRATE=true
