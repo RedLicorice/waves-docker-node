@@ -1,4 +1,5 @@
 #!/bin/sh
+mkdir -p postgres-data
 echo "Downloading blockchain.."
 mkdir -p wavesnode-data
 cd wavesnode-data

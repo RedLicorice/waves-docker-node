@@ -3,37 +3,44 @@ services:
   postgres:
     container_name: postgres
     image: 'postgres:11-alpine'
+    command: postgres -c shared_buffers=1024MB
+    shm_size: '1g'
     restart: always
     environment:
       - POSTGRES_PASSWORD=secret
     ports:
       - '5432:5432'
+    volumes:
+      - ./postgres-data:/var/lib/postgresql
   
   wavesnode:
     image: wavesplatform/wavesnode
     container_name: wavesnode
+    restart: always
     environment:
       - WAVES_NETWORK=MAINNET
-      - WAVES_LOG_LEVEL=DEBUG
+      - WAVES_LOG_LEVEL=INFO
+      - WAVES_WALLET_SEED=U9E3mE5JNqKQWo6H7KZQqvCShEJ2AhBV4iJRjihfee
+      - WAVES_WALLET_PASSWORD=xAscN54TFEsiQgFRwvo4
       - WAVES_HEAP_SIZE=2g
       - JAVA_OPTS='-Dwaves.network.declared-address=0.0.0.0:6868 -Dwaves.rest-api.port=6870 -Dwaves.rest-api.bind-address=0.0.0.0 -Dwaves.rest-api.enable=yes'
+    ports:
+      - 6868:6868
+      - 6870:6870
     volumes:
       - ./wavesnode-data/data:/var/lib/waves
-    ports:
-      - 6869:6869
-      - 6868:6868
-      - 6863:6863
-      - 6864:6864
   
   crawler:
     image: wavesplatform/blockchain-postgres-sync
     container_name: crawler
+    restart: always
     depends_on:
       - postgres
       - wavesnode
     environment:
-      - 'NODE_ADDRESS=https://wavesnode'
+      - 'NODE_ADDRESS=wavesnode:6870'
       - PGHOST=postgres
+      - PGPORT=5432
       - PGDATABASE=postgres
       - PGUSER=postgres
       - PGPASSWORD=secret

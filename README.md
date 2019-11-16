@@ -25,4 +25,5 @@ Download and extract WAVES Mainnet Blockchain data into data directory running i
 
 This stack exposes:
 - PostgreSQL on port 5432
-- WAVES Node on ports 6869, 6868, 6863, 6864
+- WAVES Node on port 6868
+- WAVES Api on port 6870
